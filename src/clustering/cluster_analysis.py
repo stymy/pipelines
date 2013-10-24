@@ -15,9 +15,9 @@ from similarity import Similarity
 from mask_surface import MaskSurface
 from mask_volume import MaskVolume
 from concat import Concat
-from variables import analysis_subjects, analysis_sessions, workingdir, resultsdir,  freesurferdir, hemispheres, similarity_types, cluster_types, n_clusters
+from variables import analysis_subjects, analysis_sessions, workingdir, resultsdir,  freesurferdir, hemispheres, similarity_types, cluster_types, n_clusters, subjects
 
-analysis_subjects = ['3795193']
+analysis_subjects = subjects
 
 def get_wf():
     
@@ -66,6 +66,7 @@ def get_wf():
     Vmask = pe.Node(MaskVolume(), name = 'volume_mask')
     wf.connect(datagrabber, 'volumedata', Vmask, 'preprocessedfile')
     wf.connect(datagrabber, 'regfile', Vmask, 'regfile')
+    wf.connect(subject_id_infosource, 'subject_id', Vmask,'subjectid')
 
 ##concatenate data & run similarity##
     concat = pe.Node(Concat(), name = 'concat')
